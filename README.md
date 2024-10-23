@@ -1,8 +1,31 @@
-# React + Vite
+# Todo Dapp
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A decentralized Todo application that allows you to manage your tasks on the blockchain.
 
-Currently, two official plugins are available:
+## Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[Check it out here!](https://todo-dapp-24.vercel.app/)
+
+## Features
+
+- Add and complete tasks
+- Simple and intuitive interface
+- Powered by blockchain technology
+
+## Smart Contract
+
+The smart contract for this application is deployed on the **Sepolia Testnet**. You can find the code in the repository below:
+
+- [Todo List Smart Contract Repository](https://github.com/yaasiinaxmed/Todo-List-SmartContract)
+
+## Technologies Used
+
+- **Frontend:**
+    
+    - React
+    - Vite
+    - Tailwind CSS
+    - Thirdweb for blockchain integration
+- **Blockchain:**
+    
+    - Ethereum (Sepolia Testnet)
