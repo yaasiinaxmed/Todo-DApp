@@ -1,6 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useContract, useContractWrite, useContractRead, useAddress, ConnectWallet } from '@thirdweb-dev/react'; 
-import abi from './abi.json'; 
+import React, { useEffect, useState } from "react";
+import {
+  useContract,
+  useContractWrite,
+  useContractRead,
+  useAddress,
+  ConnectWallet,
+  ConnectEmbed,
+} from "@thirdweb-dev/react";
+import abi from "./abi.json";
 import { MdRadioButtonUnchecked } from "react-icons/md";
 import { GoCheckCircleFill } from "react-icons/go";
 
@@ -11,12 +18,18 @@ function App() {
 
   const { contract } = useContract(contractAddress, abi); // Connect to your contract using the ABI
 
-  const [taskDescription, setTaskDescription] = useState('');
+  const [taskDescription, setTaskDescription] = useState("");
 
   // Handle contract interactions with appropriate checks
-  const { mutateAsync: createTask, isLoading: isCreatingTask } = useContractWrite(contract, "createTask");
-  const { mutateAsync: toggleTaskCompleted, isLoading: isTogglingTask } = useContractWrite(contract, "toggleTaskCompleted");
-  const { data: fetchedTasks, refetch: fetchTasks, isFetching } = useContractRead(contract, "getAllTasksByUser", [address]);
+  const { mutateAsync: createTask, isLoading: isCreatingTask } =
+    useContractWrite(contract, "createTask");
+  const { mutateAsync: toggleTaskCompleted, isLoading: isTogglingTask } =
+    useContractWrite(contract, "toggleTaskCompleted");
+  const {
+    data: fetchedTasks,
+    refetch: fetchTasks,
+    isFetching,
+  } = useContractRead(contract, "getAllTasksByUser", [address]);
 
   const handleCreateTask = async (event) => {
     event.preventDefault();
@@ -24,7 +37,7 @@ function App() {
 
     try {
       await createTask({ args: [taskDescription] });
-      setTaskDescription(''); // Reset task input
+      setTaskDescription(""); // Reset task input
       fetchTasks(); // Refetch tasks after creation
     } catch (error) {
       console.error("Failed to create task:", error.message || error);
@@ -50,22 +63,34 @@ function App() {
 
   return (
     <div className="w-full">
-      <div className='flex items-center justify-between w-full h-[80px] bg-white px-[6%] py-4 shadow-[0px_0px_3px_rgba(0,0,0,0.1)]'>
-        <h2 className="text-xl font-bold text-gray-900">Todo <span className="text-[#00b2f2]">DApp</span></h2>
-        <ConnectWallet theme={'light'} />
+      <div className="flex items-center justify-between w-full h-[80px] bg-white px-[6%] py-4 shadow-[0px_0px_3px_rgba(0,0,0,0.1)]">
+        <h2 className="text-xl font-bold text-gray-900">
+          Todo <span className="text-[#00b2f2]">DApp</span>
+        </h2>
+        <ConnectWallet
+          
+          hideBuyButton={true}
+          hideReceiveButton={true}
+          hideSendButton={true}
+          showThirdwebBranding={false}
+          welcomeScreen={true}
+        />
       </div>
-      
+
       <div className="w-full items-center flex flex-col gap-2 md:gap-4">
-        <form onSubmit={handleCreateTask} className="mt-4 w-full md:w-1/2 flex items-center gap-3 p-4 md:p-0">
-          <input 
-            type="text" 
-            placeholder='Create new task' 
-            className="w-full rounded-lg border border-solid border-[#bebebe] outline-[#00b2f2] px-3 py-2" 
+        <form
+          onSubmit={handleCreateTask}
+          className="mt-4 w-full md:w-1/2 flex items-center gap-3 p-4 md:p-0"
+        >
+          <input
+            type="text"
+            placeholder="Create new task"
+            className="w-full rounded-lg border border-solid border-[#bebebe] outline-[#00b2f2] px-3 py-2"
             value={taskDescription}
             onChange={(e) => setTaskDescription(e.target.value)}
           />
-          <button 
-            className="bg-[#42b7ed] hover:bg-[#00b2f2] text-white px-4 py-3 rounded-lg" 
+          <button
+            className="bg-[#42b7ed] hover:bg-[#00b2f2] text-white px-4 py-3 rounded-lg"
             disabled={isCreatingTask || !taskDescription}
           >
             {isCreatingTask ? "Adding..." : "Add"}
@@ -76,17 +101,27 @@ function App() {
           <div>Loading tasks...</div>
         ) : (
           <div className="w-full md:w-1/2 flex flex-col gap-4 p-4 md:p-0">
-            {fetchedTasks && fetchedTasks.map((task, index) => (
-              <div key={index} className="w-full px-5 py-4 bg-white rounded-lg shadow-[0px_0px_3px_rgba(0,0,0,0.1)] flex justify-between items-center">
-                <h3 className="text-lg text-gray-950">{task.content}</h3>
-                <span
-                  onClick={() => handleToggleTaskComplete(task.id)}
-                  className={`cursor-pointer text-xl ${task.completed ? "text-green-500" : "text-orange-500"}`}
+            {fetchedTasks &&
+              fetchedTasks.map((task, index) => (
+                <div
+                  key={index}
+                  className="w-full px-5 py-4 bg-white rounded-lg shadow-[0px_0px_3px_rgba(0,0,0,0.1)] flex justify-between items-center"
                 >
-                  {task.completed ? (<GoCheckCircleFill  />) : (<MdRadioButtonUnchecked />)}
-                </span>
-              </div>
-            ))}
+                  <h3 className="text-lg text-gray-950">{task.content}</h3>
+                  <span
+                    onClick={() => handleToggleTaskComplete(task.id)}
+                    className={`cursor-pointer text-xl ${
+                      task.completed ? "text-green-500" : "text-orange-500"
+                    }`}
+                  >
+                    {task.completed ? (
+                      <GoCheckCircleFill />
+                    ) : (
+                      <MdRadioButtonUnchecked />
+                    )}
+                  </span>
+                </div>
+              ))}
           </div>
         )}
       </div>
