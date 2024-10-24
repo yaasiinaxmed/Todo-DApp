@@ -5,7 +5,7 @@ import {
   useContractRead,
   useAddress,
   ConnectWallet,
-  ConnectEmbed,
+  lightTheme,
 } from "@thirdweb-dev/react";
 import abi from "./abi.json";
 import { MdRadioButtonUnchecked } from "react-icons/md";
@@ -68,7 +68,17 @@ function App() {
           Todo <span className="text-[#00b2f2]">DApp</span>
         </h2>
         <ConnectWallet
-          
+           theme={lightTheme({
+            colors: {
+              accentText: "#00b2f2",
+              connectedButtonBg: "#ffffff",
+              connectedButtonBgHover: "#c7c7c7",
+              primaryButtonBg: "#00b2f2",
+              primaryButtonText: "#ffffff",
+              borderColor: "#ffffff"
+            },
+          })}
+          modalSize="compact"
           hideBuyButton={true}
           hideReceiveButton={true}
           hideSendButton={true}
